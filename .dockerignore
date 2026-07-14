@@ -1,0 +1,11 @@
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.db
+.env
+.git
+.pytest_cache
+firmware
+.pio
+docs
