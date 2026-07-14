@@ -13,6 +13,7 @@ from app.config import settings
 from app.database import Device, User, get_db
 from app.schemas import DeviceRegisterRequest, DeviceRegisterResponse, DeviceStatsResponse
 from app.services.riot_rso import RiotApiError
+from app.services.henrik_dev import HenrikDevError
 from app.services.stats import get_user_last_match
 from app.services.tracker_network import TrackerNetworkError
 
@@ -86,11 +87,13 @@ async def device_stats(
 
     try:
         last_match = await get_user_last_match(db, user)
-    except (TrackerNetworkError, RiotApiError) as exc:
+    except (HenrikDevError, TrackerNetworkError, RiotApiError) as exc:
+        # Mensaje corto: la ESP32 parsea JSON basico en el OLED
+        short_msg = str(exc).split(":")[0][:40]
         return DeviceStatsResponse(
             linked=True,
             riot_id=user.riot_id,
-            message=str(exc),
+            message=short_msg,
         )
 
     return DeviceStatsResponse(linked=True, riot_id=user.riot_id, last_match=last_match)

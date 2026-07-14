@@ -10,10 +10,12 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./valorant_phone.db"
 
-    stats_provider: str = "tracker"  # "tracker" | "riot"
+    stats_provider: str = "henrik"  # "henrik" | "tracker" | "riot"
 
     tracker_api_key: str = ""
     tracker_api_base: str = "https://public-api.tracker.gg"
+
+    henrik_api_key: str = ""
 
     riot_client_id: str = ""
     riot_client_secret: str = ""
@@ -26,6 +28,9 @@ class Settings(BaseSettings):
 
     # Solo desarrollo: vincular Riot ID a mano sin RSO (apagar en produccion)
     dev_allow_manual_link: bool = True
+
+    # Codigo para verificacion Riot en GET /riot.txt (opcional si existe backend/riot.txt)
+    riot_verification_code: str = ""
 
 
 settings = Settings()
