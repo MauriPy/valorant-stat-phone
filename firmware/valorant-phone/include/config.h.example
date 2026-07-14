@@ -1,0 +1,16 @@
+#pragma once
+
+// Copia este archivo a config.h y ajusta los valores.
+
+// URL de tu backend en produccion (HTTPS obligatorio)
+#define API_BASE_URL "http://192.168.1.100:8000"
+
+// ID unico del dispositivo (puedes usar la MAC en runtime)
+#define DEVICE_ID_PREFIX "valphone-"
+
+// Intervalo entre consultas de stats (ms)
+#define POLL_INTERVAL_MS 180000
+
+// Pines I2C para OLED SSD1306 (ajusta segun tu placa ESP32-C3)
+#define OLED_SDA 8
+#define OLED_SCL 9

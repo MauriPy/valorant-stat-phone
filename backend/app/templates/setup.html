@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ app_name }} — Configurar</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f1923;
+      color: #ece8e1;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #1a2733;
+      border: 1px solid #ff4655;
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
+    }
+    h1 { margin: 0 0 8px; font-size: 1.4rem; color: #ff4655; }
+    p { line-height: 1.5; color: #c8c6c4; }
+    .code {
+      font-size: 2rem;
+      letter-spacing: .3em;
+      text-align: center;
+      margin: 20px 0;
+      font-weight: 700;
+    }
+    ol { padding-left: 1.2rem; }
+    a.btn {
+      display: block;
+      text-align: center;
+      background: #ff4655;
+      color: white;
+      text-decoration: none;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    a.btn:hover { filter: brightness(1.08); }
+    .warn {
+      font-size: .85rem;
+      border-left: 3px solid #f0a500;
+      padding-left: 10px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>{{ app_name }}</h1>
+    <p>Vincula tu cuenta Riot con tu dispositivo para ver tu ultima partida en el OLED.</p>
+
+    {% if pairing_code %}
+    <p>Codigo en pantalla del dispositivo:</p>
+    <div class="code">{{ pairing_code }}</div>
+    {% else %}
+    <p class="warn">Introduce el codigo que aparece en el OLED o escanea el QR del dispositivo.</p>
+    {% endif %}
+
+    <ol>
+      <li>Conecta el celular Valorant a tu WiFi (red <strong>ValorantPhone-XXXX</strong> la primera vez).</li>
+      <li>Anota el codigo de 6 caracteres del OLED.</li>
+      <li>Inicia sesion con Riot para autorizar el acceso a tus stats.</li>
+    </ol>
+
+    {% if error %}
+    <p class="warn" style="border-color:#ff4655;color:#ffb4b4;">
+      {{ error }}
+    </p>
+    {% endif %}
+
+    {% if riot_oauth_ready %}
+    <a class="btn" href="{{ login_url }}">Iniciar sesion con Riot</a>
+    {% else %}
+    <p class="warn">
+      Riot OAuth no esta configurado (<code>RIOT_CLIENT_ID</code> / <code>RIOT_CLIENT_SECRET</code> vacios).
+      {% if dev_manual_link and pairing_code %}
+      Usa el formulario de abajo para vincular en modo prueba.
+      {% else %}
+      Configura las credenciales Riot en <code>.env</code> para habilitar el login.
+      {% endif %}
+    </p>
+    {% endif %}
+
+    {% if dev_manual_link and pairing_code %}
+    <form method="post" action="/setup/link-manual" style="margin-top:24px;text-align:left;">
+      <p style="font-size:.9rem;color:#f0a500;">Modo prueba (sin Riot OAuth):</p>
+      <label style="font-size:.85rem;">Tu Riot ID</label>
+      <input name="riot_id" placeholder="Poison#YEAH" required
+        style="width:100%;box-sizing:border-box;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #444;background:#0f1923;color:#fff;">
+      <input type="hidden" name="pairing_code" value="{{ pairing_code }}">
+      <button type="submit" style="width:100%;padding:12px;border:0;border-radius:8px;background:#3dd68c;color:#0f1923;font-weight:700;cursor:pointer;">
+        Vincular para prueba
+      </button>
+    </form>
+    {% endif %}
+
+    <p class="warn">
+      Proveedor de datos: <strong>{{ stats_provider }}</strong>.
+      Producto no oficial. Al vincular aceptas compartir tus estadisticas con este dispositivo.
+    </p>
+  </div>
+</body>
+</html>

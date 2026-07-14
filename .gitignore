@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.db
+
+# PlatformIO
+firmware/valorant-phone/.pio/
+firmware/valorant-phone/include/config.h
+
+# IDE
+.idea/
+.vscode/
+*.swp

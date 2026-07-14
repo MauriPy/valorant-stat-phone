@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ app_name }} — Listo</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f1923;
+      color: #ece8e1;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #1a2733;
+      border: 1px solid #3dd68c;
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 420px;
+      text-align: center;
+    }
+    h1 { color: #3dd68c; margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Dispositivo vinculado</h1>
+    {% if riot_id %}
+    <p>Cuenta: <strong>{{ riot_id }}</strong></p>
+    {% endif %}
+    <p>Tu celular Valorant mostrara el KDA de tu ultima partida en unos segundos.</p>
+    <p>Puedes cerrar esta pagina.</p>
+  </div>
+</body>
+</html>
