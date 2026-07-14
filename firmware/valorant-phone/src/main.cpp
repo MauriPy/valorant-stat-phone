@@ -49,12 +49,16 @@ String buildDeviceId() {
   return String(buf);
 }
 
-bool registerDevice() {
-  if (WiFi.status() != WL_CONNECTED) return false;
+bool registerDevice(String &errorDetail) {
+  if (WiFi.status() != WL_CONNECTED) {
+    errorDetail = "Sin WiFi";
+    return false;
+  }
 
   HTTPClient http;
   String url = String(API_BASE_URL) + "/api/devices/register";
   http.begin(url);
+  http.setTimeout(15000);
   http.addHeader("Content-Type", "application/json");
 
   StaticJsonDocument<128> body;
@@ -64,8 +68,16 @@ bool registerDevice() {
   String payload;
   serializeJson(body, payload);
 
+  Serial.printf("POST %s\n", url.c_str());
   int code = http.POST(payload);
+  Serial.printf("HTTP %d\n", code);
+
   if (code != 200) {
+    if (code < 0) {
+      errorDetail = "HTTP err " + String(code);
+    } else {
+      errorDetail = "HTTP " + String(code);
+    }
     http.end();
     return false;
   }
@@ -74,7 +86,10 @@ bool registerDevice() {
   http.end();
 
   StaticJsonDocument<512> doc;
-  if (deserializeJson(doc, response)) return false;
+  if (deserializeJson(doc, response)) {
+    errorDetail = "JSON invalido";
+    return false;
+  }
 
   deviceSecret = doc["device_secret"].as<String>();
   pairingCode = doc["pairing_code"].as<String>();
@@ -152,11 +167,23 @@ void setup() {
   deviceId = buildDeviceId();
   setupWiFi();
 
-  showMessage("WiFi OK", deviceId);
+  String wifiIp = WiFi.localIP().toString();
+  showMessage("WiFi OK", wifiIp, deviceId);
+  delay(1500);
 
   if (deviceSecret.isEmpty()) {
-    if (!registerDevice()) {
-      showMessage("Error registro", "Revisa API");
+    String err;
+    bool ok = false;
+    for (int attempt = 1; attempt <= 3; attempt++) {
+      showMessage("Registrando...", String(attempt) + "/3", API_BASE_URL);
+      if (registerDevice(err)) {
+        ok = true;
+        break;
+      }
+      delay(2000);
+    }
+    if (!ok) {
+      showMessage("Error registro", err, wifiIp);
       while (true) delay(5000);
     }
   }
