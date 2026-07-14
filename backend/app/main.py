@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from app.config import settings
 from app.database import init_db
-from app.routers import auth, devices, setup
+from app.routers import auth, devices, legal, setup
 from app.schemas import HealthResponse
 
 
@@ -19,6 +19,7 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.include_router(devices.router)
 app.include_router(auth.router)
 app.include_router(setup.router)
+app.include_router(legal.router)
 
 
 @app.get("/health", response_model=HealthResponse)

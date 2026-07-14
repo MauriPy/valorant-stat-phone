@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Legal{% endblock %} — {{ app_name }}</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f1923;
+      color: #ece8e1;
+      margin: 0;
+      padding: 24px;
+      line-height: 1.6;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { color: #ff4655; font-size: 1.6rem; }
+    h2 { color: #ece8e1; font-size: 1.1rem; margin-top: 1.6rem; }
+    p, li { color: #c8c6c4; }
+    a { color: #ff4655; }
+    .nav { margin-bottom: 24px; font-size: .9rem; }
+    .disclaimer {
+      border-left: 3px solid #f0a500;
+      padding-left: 12px;
+      margin: 20px 0;
+      font-size: .95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="{{ app_url }}/setup">Setup</a> ·
+      <a href="{{ app_url }}/terms">Terms</a> ·
+      <a href="{{ app_url }}/privacy">Privacy</a>
+    </nav>
+    {% block content %}{% endblock %}
+    <p style="margin-top:32px;font-size:.85rem;color:#888;">
+      Last updated: July 14, 2026
+    </p>
+  </div>
+</body>
+</html>

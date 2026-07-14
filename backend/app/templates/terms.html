@@ -1,0 +1,70 @@
+{% extends "legal_base.html" %}
+{% block title %}Terms of Service{% endblock %}
+{% block content %}
+<h1>Terms of Service</h1>
+<p class="disclaimer">
+  <strong>{{ app_name }}</strong> is an independent, fan-made product.
+  It is not affiliated with, endorsed by, or sponsored by Riot Games, Inc.
+  VALORANT and all related marks are trademarks of Riot Games, Inc.
+</p>
+
+<h2>1. Service description</h2>
+<p>
+  {{ app_name }} is a physical device (ESP32 + OLED display) paired with a web setup flow.
+  After you voluntarily link your Riot account, the device may show statistics from your
+  most recent VALORANT match (for example KDA). Data is fetched via authorized third-party
+  APIs (Tracker Network and/or Riot Games API with RSO).
+</p>
+
+<h2>2. Eligibility</h2>
+<p>
+  You must be at least 13 years old (or the minimum age required in your country) and
+  allowed to use VALORANT under Riot Games' terms. By using this product you confirm you
+  have the right to share your game statistics with this device.
+</p>
+
+<h2>3. Account linking (opt-in)</h2>
+<p>
+  Linking your Riot account is optional but required for personalized stats.
+  You authorize us to request your public game statistics on your behalf while the device
+  remains linked. You may stop sharing by resetting the device or unlinking through support.
+</p>
+
+<h2>4. Acceptable use</h2>
+<ul>
+  <li>Use the device only for personal, non-commercial display of your own stats unless you are the product owner operating the service.</li>
+  <li>Do not attempt to reverse engineer, abuse, or overload the backend API.</li>
+  <li>Do not use the product to harass others or violate Riot Games' policies.</li>
+</ul>
+
+<h2>5. Availability and accuracy</h2>
+<p>
+  Stats depend on third-party APIs and may be delayed, incomplete, or unavailable.
+  We do not guarantee uptime, accuracy, or compatibility with future VALORANT patches.
+</p>
+
+<h2>6. Hardware</h2>
+<p>
+  The physical device is provided as-is. The operator is not liable for damage caused by
+  improper assembly, power supply issues, or modifications not described in the documentation.
+</p>
+
+<h2>7. Limitation of liability</h2>
+<p>
+  To the maximum extent permitted by law, the service is provided "as is" without warranties.
+  We are not liable for indirect, incidental, or consequential damages arising from use of
+  the product or inability to access game data.
+</p>
+
+<h2>8. Changes</h2>
+<p>
+  These terms may be updated. Continued use after changes constitutes acceptance.
+  Material changes will be reflected on this page with an updated date.
+</p>
+
+<h2>9. Contact</h2>
+<p>
+  Questions: open an issue at
+  <a href="https://github.com/MauriPy/valorant-stat-phone/issues">github.com/MauriPy/valorant-stat-phone</a>.
+</p>
+{% endblock %}
