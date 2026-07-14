@@ -102,16 +102,20 @@ bool registerDevice(String &errorDetail) {
   return true;
 }
 
-bool fetchStats(String &kda, String &riotId, bool &linked, String &message) {
-  if (WiFi.status() != WL_CONNECTED) return false;
+bool fetchStats(String &kda, String &riotId, bool &linked, String &message, int &httpCode) {
+  if (WiFi.status() != WL_CONNECTED) {
+    httpCode = -2;
+    return false;
+  }
 
   HTTPClient http;
   String url = String(API_BASE_URL) + "/api/devices/" + deviceId + "/stats";
   http.begin(url);
+  http.setTimeout(15000);
   http.addHeader("X-Device-Secret", deviceSecret);
 
-  int code = http.GET();
-  if (code != 200) {
+  httpCode = http.GET();
+  if (httpCode != 200) {
     http.end();
     return false;
   }
@@ -171,7 +175,8 @@ void setup() {
   showMessage("WiFi OK", wifiIp, deviceId);
   delay(1500);
 
-  if (deviceSecret.isEmpty()) {
+  // Siempre sincroniza credenciales con el backend (corrige secret viejo en NVS)
+  {
     String err;
     bool ok = false;
     for (int attempt = 1; attempt <= 3; attempt++) {
@@ -188,7 +193,8 @@ void setup() {
     }
   }
 
-  showMessage("Codigo:", pairingCode, "tracker.gg/setup");
+  showMessage("Codigo:", pairingCode, "Abre /setup");
+  delay(3000);
 }
 
 void loop() {
@@ -200,9 +206,14 @@ void loop() {
 
   String kda, riotId, message;
   bool linked = false;
+  int httpCode = 0;
 
-  if (!fetchStats(kda, riotId, linked, message)) {
-    showMessage("Sin conexion", "al servidor");
+  if (!fetchStats(kda, riotId, linked, message, httpCode)) {
+    if (httpCode == 401) {
+      showMessage("Secreto invalido", "Pulsa RESET", pairingCode);
+    } else {
+      showMessage("Sin conexion", "HTTP " + String(httpCode), pairingCode);
+    }
     return;
   }
 
